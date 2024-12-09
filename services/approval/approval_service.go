@@ -210,12 +210,30 @@ func (s *ApprovalService) StartApprovalProcess(documentID int64, approverIDs []i
 	return tx.Commit()
 }
 
-func (s *ApprovalService) ApproveDocument(processID, userID int64, approved bool, comment string) error {
+func (s *ApprovalService) ApproveDocument(processID int64, userID int64, approved bool, comment string) error {
+	// Начинаем транзакцию
 	tx, err := s.db.Begin()
 	if err != nil {
 		return fmt.Errorf("ошибка начала транзакции: %w", err)
 	}
 	defer tx.Rollback()
+
+	// Проверяем, что пользователь является утверждающим для данного процесса
+	var exists bool
+	err = tx.QueryRow(`
+        SELECT EXISTS (
+            SELECT 1 FROM approvers 
+            WHERE process_id = $1 AND user_id = $2 AND status = 'Ожидает'
+        )
+    `, processID, userID).Scan(&exists)
+
+	if err != nil {
+		return fmt.Errorf("ошибка проверки прав пользователя: %w", err)
+	}
+
+	if !exists {
+		return fmt.Errorf("пользователь не имеет прав на утверждение")
+	}
 
 	// Обновляем статус утверждающего
 	status := "Утверждено"
@@ -260,17 +278,16 @@ func (s *ApprovalService) ApproveDocument(processID, userID int64, approved bool
 			return fmt.Errorf("ошибка проверки отклонений: %w", err)
 		}
 
-		// Обновляем статусы процесса и документа
+		// Обновляем статус процесса и документа
 		finalStatus := "Утвержден"
 		if hasRejections {
 			finalStatus = "Отклонен"
 		}
 
 		_, err = tx.Exec(`
-            UPDATE approval_processes ap
+            UPDATE approval_processes
             SET status = 'Завершен'
-            FROM documents d
-            WHERE ap.id = $1 AND ap.document_id = d.id
+            WHERE id = $1
         `, processID)
 
 		if err != nil {

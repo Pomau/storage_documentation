@@ -20,6 +20,14 @@ export const createDocument = async (document: Partial<Document>, file: File): P
     return data.data;
 };
 
+interface SearchFilters {
+    status?: string[];
+    documentType?: string[];
+    dateRange?: [string, string];
+    museum?: string[];
+    founder?: string[];
+}
+
 export const searchDocuments = async (query: string, filters?: SearchFilters): Promise<Document[]> => {
     const params = new URLSearchParams();
     if (query) params.set('q', query);
@@ -35,11 +43,17 @@ export const searchDocuments = async (query: string, filters?: SearchFilters): P
         params.set('date_from', filters.dateRange[0]);
         params.set('date_to', filters.dateRange[1]);
     }
+    if (filters?.museum?.length) {
+        params.set('museum', filters.museum.join(','));
+    }
+    if (filters?.founder?.length) {
+        params.set('founder', filters.founder.join(','));
+    }
 
     const { data } = await apiClient.get<{ success: boolean; data: Document[] | null }>(
         `/documents/search?${params.toString()}`
     );
-    return data.data || []; // Возвращаем пустой массив если data === null
+    return data.data || [];
 };
 
 export const startApprovalProcess = async (documentId: number, approverIds: number[]): Promise<ApprovalProcess> => {

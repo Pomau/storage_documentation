@@ -11,17 +11,12 @@ export default defineConfig({
         target: process.env.VITE_API_URL || 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
-      },
-      '/documents': {
-        target: `${process.env.VITE_API_URL || 'http://localhost:8080'}/api`,
-        changeOrigin: true,
-        secure: false,
-      },
-      '/approvals': {
-        target: `${process.env.VITE_API_URL || 'http://localhost:8080'}/api`,
-        changeOrigin: true,
-        secure: false,
       }
     }
+  },
+  base: '/',
+  preview: {
+    port: 5173,
+    strictPort: true,
   }
 }) 

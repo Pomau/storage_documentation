@@ -334,19 +334,23 @@ export const DocumentSearchPage: React.FC = () => {
 				<div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
 					{/* Фасеты слева */}
 					<div style={{ width: '300px' }}>
-						<Space style={{ marginBottom: '16px' }} direction="vertical" style={{ width: '100%' }}>
-							<Button 
-								type="primary" 
+						<Space
+							style={{ marginBottom: '16px' }}
+							direction='vertical'
+							style={{ width: '100%' }}
+						>
+							<Button
+								type='primary'
 								onClick={() => handleSearch(searchQuery)}
 								icon={<FilterOutlined />}
 								block
 							>
 								Применить фильтры
 							</Button>
-							<Button 
+							<Button
 								onClick={() => {
-									setFilters({});
-									handleSearch(searchQuery);
+									setFilters({})
+									handleSearch(searchQuery)
 								}}
 								block
 							>
@@ -360,7 +364,6 @@ export const DocumentSearchPage: React.FC = () => {
 									([status, count]) => (
 										<div key={status} style={{ marginBottom: '8px' }}>
 											<Tag
-												color={getStatusColor(status)}
 												style={{ cursor: 'pointer' }}
 												onClick={() => handleFacetClick('status', status)}
 												className={

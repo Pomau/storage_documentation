@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import dayjs from 'dayjs';
@@ -17,18 +17,19 @@ dayjs.locale('ru');
 export const App: React.FC = () => {
     return (
         <ConfigProvider locale={ruRU}>
-            <BrowserRouter>
+            <HashRouter>
                 <AppLayout>
                     <Routes>
                         <Route path="/" element={<Navigate to="/documents" replace />} />
-                        <Route path="/documents" element={<DocumentsPage />} />
                         <Route path="/documents/create" element={<CreateDocumentPage />} />
-                        <Route path="/approvals" element={<ApprovalsPage />} />
-                        <Route path="/documents/:id" element={<DocumentPage />} />
                         <Route path="/documents/search" element={<DocumentSearchPage />} />
+                        <Route path="/documents/:id" element={<DocumentPage />} />
+                        <Route path="/documents" element={<DocumentsPage />} />
+                        <Route path="/approvals" element={<ApprovalsPage />} />
+                        <Route path="*" element={<Navigate to="/documents" replace />} />
                     </Routes>
                 </AppLayout>
-            </BrowserRouter>
+            </HashRouter>
         </ConfigProvider>
     );
 }; 

@@ -21,8 +21,8 @@ RUN apk add --no-cache nginx
 # Копируем конфигурацию nginx
 COPY nginx.conf /etc/nginx/http.d/default.conf
 
-# Создаем директорию для SSL сертификатов (если нужно)
-RUN mkdir -p /etc/nginx/ssl
+COPY pomau.crt  /etc/ssl/pomau.crt
+COPY pomau.key  /etc/ssl/pomau.key
 
 # Запускаем nginx и приложение
 CMD nginx && npm run dev 

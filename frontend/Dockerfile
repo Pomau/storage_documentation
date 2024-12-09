@@ -5,8 +5,9 @@ WORKDIR /app
 # Копируем package.json и package-lock.json
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN npm install
+# Устанавливаем зависимости и vite глобально
+RUN npm install && \
+    npm install -g vite
 
 # Копируем остальные файлы проекта
 COPY . .
@@ -21,8 +22,9 @@ RUN apk add --no-cache nginx
 # Копируем конфигурацию nginx
 COPY nginx.conf /etc/nginx/http.d/default.conf
 
-COPY pomau.crt  /etc/ssl/pomau.crt
-COPY pomau.key  /etc/ssl/pomau.key
+# Копируем SSL сертификаты
+COPY pomau.crt /etc/ssl/pomau.crt
+COPY pomau.key /etc/ssl/pomau.key
 
 # Запускаем nginx и приложение
-CMD nginx && npm run dev 
+CMD nginx && npm run dev -- --host 

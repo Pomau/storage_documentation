@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   postgres:
@@ -10,10 +10,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
   backend:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     environment:
@@ -22,24 +22,24 @@ services:
       DB_USER: apps
       DB_PASSWORD: qasw123
       DB_NAME: document_approval
-      GO111MODULE: "on"
+      GO111MODULE: 'on'
     depends_on:
       - postgres
     ports:
-      - "8080:8080"
+      - '8080:8080'
     volumes:
       - ./migrations:/app/migrations
       - .:/app
     working_dir: /app
 
   frontend:
-    build: 
+    build:
       context: ./frontend
       dockerfile: Dockerfile
     environment:
       VITE_API_URL: http://localhost:8080
     ports:
-      - "5173:5173"
+      - '5173:5173'
     depends_on:
       - backend
     volumes:
@@ -47,4 +47,4 @@ services:
       - ./frontend/public:/app/public
 
 volumes:
-  postgres_data: 
+  postgres_data:

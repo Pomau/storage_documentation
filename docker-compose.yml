@@ -42,8 +42,9 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
+      - ./frontend:/app
+      - ./certificate_ca.crt:/etc/nginx/certificate_ca.crt
+      - ./certificate.key:/etc/nginx/certificate.key
 
 volumes:
   postgres_data:

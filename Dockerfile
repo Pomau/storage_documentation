@@ -24,13 +24,19 @@ FROM alpine:3.18
 WORKDIR /app
 
 # Копирование бинарного файла из этапа сборки
-COPY --from=builder /build/main /app/main
+COPY --from=builder build/main /main
+
+# Проверка копирования файла
+RUN ls -la /main
 
 # Установка необходимых runtime зависимостей
 RUN apk add --no-cache ca-certificates
 
 # Установка правильных прав на исполняемый файл
-RUN chmod +x /app/main
+RUN chmod +x /main
+
+# Проверка прав доступа
+RUN ls -la /main
 
 # Запуск приложения
-CMD ["/app/main"] 
+CMD ["/main"] 

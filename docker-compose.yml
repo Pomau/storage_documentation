@@ -28,8 +28,7 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./migrations:/app/migrations
-      - .:/app
+      - ./migrations:/app/migrations:ro
     working_dir: /app
 
   frontend:

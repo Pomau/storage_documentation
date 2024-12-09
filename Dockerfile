@@ -16,18 +16,22 @@ RUN go mod download
 COPY . .
 
 # Сборка приложения с подробным выводом
-RUN CGO_ENABLED=1 go build -v -o main ./cmd/main.go
+RUN CGO_ENABLED=1 go build -v -o /build/main ./cmd/main.go
 
 # Финальный этап
 FROM alpine:3.18
 
 WORKDIR /app
 
-# Копирование бинарного файла из этапа сборки
-COPY --from=builder /build/main .
+# Копирование бинарного файла и миграций
+COPY --from=builder /build/main /app/main
+COPY migrations /app/migrations
 
 # Установка необходимых runtime зависимостей
 RUN apk add --no-cache ca-certificates
 
+# Делаем файл исполняемым
+RUN chmod +x /app/main
+
 # Запуск приложения
-CMD ["./main"] 
+CMD ["/app/main"] 

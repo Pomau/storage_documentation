@@ -16,7 +16,7 @@ RUN go mod download
 COPY . .
 
 # Сборка приложения с подробным выводом
-RUN CGO_ENABLED=1 go build -v -o main cmd/main.go
+RUN CGO_ENABLED=1 go build -v -o main ./cmd/main.go
 
 # Финальный этап
 FROM alpine:3.18

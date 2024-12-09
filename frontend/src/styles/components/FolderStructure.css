@@ -1,0 +1,36 @@
+.custom-tree .ant-tree-node-content-wrapper {
+    padding: 4px 8px;
+}
+
+.custom-tree .ant-tree-node-content-wrapper:hover {
+    background-color: #f5f5f5;
+}
+
+.custom-tree .ant-tree-treenode {
+    padding: 2px 0;
+}
+
+.custom-tree .anticon-folder,
+.custom-tree .anticon-folder-open {
+    color: #ffd591;
+}
+
+.custom-tree .anticon-file {
+    color: #8c8c8c;
+}
+
+.custom-tree .anticon-file-word {
+    color: #1890ff;
+}
+
+.custom-tree .anticon-file-pdf {
+    color: #ff4d4f;
+}
+
+.custom-tree .anticon-file-excel {
+    color: #52c41a;
+}
+
+.custom-tree .anticon-file-image {
+    color: #722ed1;
+} 

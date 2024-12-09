@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
   postgres:
@@ -28,7 +28,8 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./migrations:/app/migrations:ro
+      - ./migrations:/app/migrations
+      - .:/app
     working_dir: /app
 
   frontend:

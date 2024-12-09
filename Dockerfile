@@ -9,8 +9,8 @@ RUN apk add --no-cache git gcc musl-dev
 # Копирование файлов go.mod и go.sum
 COPY go.mod go.sum ./
 
-# Загрузка зависимостей
-RUN go mod download
+# Загрузка зависимостей и обновление модулей
+RUN go mod download && go mod tidy
 
 # Копирование исходного кода
 COPY . .

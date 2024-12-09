@@ -82,10 +82,25 @@ func (h *DocumentHandler) SearchDocuments(w http.ResponseWriter, r *http.Request
 
 	// Парсим фильтры
 	filters := make(map[string]interface{})
-	for key, values := range r.URL.Query() {
-		if key != "q" && len(values) > 0 {
-			filters[key] = values[0]
-		}
+
+	// Добавляем фильтры из query params
+	if museum := r.URL.Query().Get("museum"); museum != "" {
+		filters["museum"] = museum
+	}
+	if founder := r.URL.Query().Get("founder"); founder != "" {
+		filters["founder"] = founder
+	}
+	if status := r.URL.Query().Get("status"); status != "" {
+		filters["status"] = status
+	}
+	if docType := r.URL.Query().Get("document_type"); docType != "" {
+		filters["document_type"] = docType
+	}
+	if dateFrom := r.URL.Query().Get("date_from"); dateFrom != "" {
+		filters["date_from"] = dateFrom
+	}
+	if dateTo := r.URL.Query().Get("date_to"); dateTo != "" {
+		filters["date_to"] = dateTo
 	}
 
 	// Ищем документы

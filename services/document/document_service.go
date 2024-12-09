@@ -153,28 +153,51 @@ func (s *DocumentService) SearchDocuments(query string, filters map[string]inter
 	// Добавляем фильтры
 	for key, value := range filters {
 		switch key {
+		case "museum":
+			museums := strings.Split(value.(string), ",")
+			placeholders := make([]string, len(museums))
+			for i := range museums {
+				placeholders[i] = fmt.Sprintf("$%d", paramCount)
+				params = append(params, museums[i])
+				paramCount++
+			}
+			baseQuery += fmt.Sprintf(" AND museum_name = ANY(ARRAY[%s])", strings.Join(placeholders, ","))
+
+		case "founder":
+			founders := strings.Split(value.(string), ",")
+			placeholders := make([]string, len(founders))
+			for i := range founders {
+				placeholders[i] = fmt.Sprintf("$%d", paramCount)
+				params = append(params, founders[i])
+				paramCount++
+			}
+			baseQuery += fmt.Sprintf(" AND founder = ANY(ARRAY[%s])", strings.Join(placeholders, ","))
+
 		case "status":
 			statuses := strings.Split(value.(string), ",")
 			placeholders := make([]string, len(statuses))
-			for i, _ := range statuses {
+			for i := range statuses {
 				placeholders[i] = fmt.Sprintf("$%d", paramCount)
 				params = append(params, statuses[i])
 				paramCount++
 			}
 			baseQuery += fmt.Sprintf(" AND status = ANY(ARRAY[%s])", strings.Join(placeholders, ","))
+
 		case "document_type":
 			types := strings.Split(value.(string), ",")
 			placeholders := make([]string, len(types))
-			for i, _ := range types {
+			for i := range types {
 				placeholders[i] = fmt.Sprintf("$%d", paramCount)
 				params = append(params, types[i])
 				paramCount++
 			}
 			baseQuery += fmt.Sprintf(" AND document_type = ANY(ARRAY[%s])", strings.Join(placeholders, ","))
+
 		case "date_from":
 			baseQuery += fmt.Sprintf(" AND receipt_date >= $%d", paramCount)
 			params = append(params, value)
 			paramCount++
+
 		case "date_to":
 			baseQuery += fmt.Sprintf(" AND receipt_date <= $%d", paramCount)
 			params = append(params, value)
@@ -451,7 +474,7 @@ func (s *DocumentService) UpdateDocument(doc *models.Document) (*models.Document
 		return nil, fmt.Errorf("ошибка обновления документа: %w", err)
 	}
 
-	// Преобразуем JSON обратно в map
+	// Преоб��азуем JSON обратно в map
 	if metadataBytes != nil {
 		var metadata map[string]interface{}
 		if err := json.Unmarshal(metadataBytes, &metadata); err != nil {

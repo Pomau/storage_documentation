@@ -9,5 +9,7 @@ CREATE TABLE folders (
 CREATE INDEX idx_folders_parent_id ON folders(parent_id);
 CREATE INDEX idx_folders_path ON folders(path);
 
+ALTER TABLE documents ADD COLUMN  folder_id INTEGER REFERENCES folders(id);
+
 -- Добавим корневую папку
 INSERT INTO folders (name, path) VALUES ('Документы', '/'); 

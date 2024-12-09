@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS documents (
     status VARCHAR(50) NOT NULL DEFAULT 'Черновик',
     file_path TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    folder_id INTEGER REFERENCES folders(id),
+
     document_type VARCHAR(50) NOT NULL,
     metadata JSONB NOT NULL DEFAULT '{}'::jsonb
 );

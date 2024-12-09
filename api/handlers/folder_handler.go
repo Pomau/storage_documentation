@@ -230,6 +230,7 @@ func (h *FolderHandler) UploadFile(w http.ResponseWriter, r *http.Request) {
 
 	// Сохраняем файл и создаем документ
 	if err := h.folderService.SaveFile(doc, file); err != nil {
+		print(err.Error())
 		response.Error(w, http.StatusInternalServerError, err.Error())
 		return
 	}

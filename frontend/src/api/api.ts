@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: 'https://pomau.ru/api',
     headers: {
         'Content-Type': 'application/json',
     },

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,8 +20,19 @@ import (
 )
 
 func main() {
-	// Подключение к БД с отключенным SSL
-	db, err := sql.Open("postgres", "postgres://apps:qasw123@localhost:5432/document_approval?sslmode=disable")
+	// Получаем параметры подключения из переменных окружения
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+
+	// Формируем строку подключения
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		dbUser, dbPassword, dbHost, dbPort, dbName)
+
+	// Подключение к БД
+	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
 		log.Fatal("Ошибка подключения к БД:", err)
 	}

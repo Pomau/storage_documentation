@@ -35,9 +35,14 @@ COPY pomau.key /etc/ssl/pomau.key
 # Даем права на выполнение npm
 RUN chown -R node:node /app
 
-# Создаем скрипт для запуска
-RUN echo "#!/bin/sh\nnginx\nnpm run dev" > /app/start.sh && \
-    chmod +x /app/start.sh
+# Создаем и настраиваем скрипт запуска
+COPY <<EOF /start.sh
+#!/bin/sh
+nginx
+cd /app && npm run dev
+EOF
+
+RUN chmod +x /start.sh
 
 # Запускаем приложение
-CMD ["/app/start.sh"]
+CMD ["/start.sh"]

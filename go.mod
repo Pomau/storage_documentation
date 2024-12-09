@@ -22,6 +22,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
@@ -29,15 +30,4 @@ require (
 	golang.org/x/tools v0.7.0 // indirect
 	google.golang.org/grpc v1.56.3 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-)
-
-// Добавляем replace директивы для локальных пакетов
-replace (
-	document-approval/api/router => ./api/router
-	document-approval/pkg/database => ./pkg/database
-	document-approval/services/approval => ./services/approval
-	document-approval/services/document => ./services/document
-	document-approval/services/folder => ./services/folder
-	document-approval/services/storage => ./services/storage
-	document-approval/services/user => ./services/user
 )
